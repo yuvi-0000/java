@@ -1,0 +1,71 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2870
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 # 1. Go to project folder\
+cd ~/Desktop/Projects/email-writer-sb\
+\
+# 2. Build the Spring Boot JAR\
+./mvnw clean package -DskipTests\
+\
+# 3. Create Docker image using Spring Boot Buildpacks\
+./mvnw spring-boot:build-image\
+\
+# 4. Verify image was created\
+docker images\
+\
+# 5. Run Docker container locally\
+docker run -p 8081:8080 \\\
+-e GEMINI_API_URL="https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent" \\\
+-e GEMINI_API_KEY="YOUR_GEMINI_API_KEY" \\\
+email-writer-sb:0.0.1-SNAPSHOT\
+\
+# Application URL\
+# http://localhost:8081\
+\
+# 6. Login to Docker Hub\
+docker login\
+\
+# 7. Tag image for Docker Hub\
+docker tag email-writer-sb:0.0.1-SNAPSHOT YOUR_DOCKERHUB_USERNAME/email-writer-sb:latest\
+\
+# 8. Push image to Docker Hub\
+docker push YOUR_DOCKERHUB_USERNAME/email-writer-sb:latest\
+\
+# 9. Verify pushed image on Docker Hub\
+# https://hub.docker.com/\
+\
+# 10. Pull image on another machine\
+docker pull YOUR_DOCKERHUB_USERNAME/email-writer-sb:latest\
+\
+# 11. Run image from Docker Hub\
+docker run -p 8081:8080 \\\
+-e GEMINI_API_URL="https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent" \\\
+-e GEMINI_API_KEY="YOUR_GEMINI_API_KEY" \\\
+YOUR_DOCKERHUB_USERNAME/email-writer-sb:latest\
+\
+# Useful Docker Commands\
+\
+# Show images\
+docker images\
+\
+# Show running containers\
+docker ps\
+\
+# Show all containers\
+docker ps -a\
+\
+# Stop container\
+docker stop <CONTAINER_ID>\
+\
+# Remove container\
+docker rm <CONTAINER_ID>\
+\
+# Remove image\
+docker rmi <IMAGE_ID>\
+\
+# View logs\
+docker logs <CONTAINER_ID>}
